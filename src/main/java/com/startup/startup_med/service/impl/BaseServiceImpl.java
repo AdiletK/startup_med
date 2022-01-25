@@ -2,6 +2,8 @@ package com.startup.startup_med.service.impl;
 
 import com.startup.startup_med.service.BaseService;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.MappedSuperclass;
 import java.util.List;
@@ -21,6 +23,7 @@ public class BaseServiceImpl<T, R extends JpaRepository<T, Long>>
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public T findById(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("The object not found. ID:" + id));
